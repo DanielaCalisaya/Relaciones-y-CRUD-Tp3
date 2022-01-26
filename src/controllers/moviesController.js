@@ -2,6 +2,9 @@ const path = require('path');
 const db = require('../database/models');
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
+const {validationResult} = require('express-validator');
+const { error } = require('console');
+const res = require('express/lib/response');
 
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
@@ -60,19 +63,111 @@ const moviesController = {
         })
     },
     create: function (req,res) {
+        const errors = validationResult(req);
 
+        if(errors.isEmpty()){
+            const { title, rating, awards, release_date, length, genre_id } = req.body
+            
+            Movies.create({
+                title, 
+                rating, 
+                awards, 
+                release_date, 
+                length, 
+                genre_id 
+            })
+
+              .then((movie) => {
+                  res.redirect('/movies')
+                  //res.redirect(`/movies/detail/${movie.id}`);
+
+                })
+              .catch((error) => console.log(error))
+            
+        }else{
+            db.Genre.findAll()
+        .then((allGenres) => {
+            res.render('moviesAdd', {
+                allGenres,
+                errors: errors.mapped(),
+                old: req.body /* -> te deja guardado lo que escribiste... */
+            })
+        })
+        }
     },
     edit: function(req,res) {
-
+        const movie = Movies.findByPk(req.params.id);
+        const genres = Genres.findAll();
+        
+        Promise.all([movie, genres])
+        .then(([Movie, allGenres]) => {
+          
+          res.render('moviesEdit', {
+            Movie, 
+            allGenres
+          })
+        })
+    
     },
     update: function (req,res) {
+        const errors = validationResult(req);
 
+        if (errors.isEmpty()) {
+          const { title, rating, awards, release_date, length, genre_id } =
+            req.body;
+          Movies.update({ 
+            title, 
+            rating, 
+            awards, 
+            release_date, 
+            length, 
+            genre_id 
+          },{
+            where: {
+              id: req.params.id
+            }
+            })
+            .then(() => {
+              res.redirect("/movies");
+            })
+            .catch((error) => console.log(error));
+        } else {
+          const movie = Movies.findByPk(req.params.id);
+          const genres = Genres.findAll();
+          
+          Promise.all([movie, genres])
+          .then(([Movie, allGenres]) => {
+            
+            res.render('moviesEdit', {
+              Movie, 
+              allGenres,
+              errors: errors.mapped(),
+              old: req.body
+            })
+          })
+          .catch((error) => console.log(error));
+        }
+    
     },
-    delete: function (req,res) {
-
+    delete: function (req, res) {
+        Movies.findByPk(req.params.id)
+        .then((Movie) => {
+            res.render('moviesDelete', {
+                Movie
+            })
+        })
     },
     destroy: function (req,res) {
-
+        Movies.destroy({
+            where: {
+                id: req.params.id
+            }
+        })
+        .then((result) => {
+            if(result) {
+                res.redirect('/movies')
+            }
+        })
     }
 }
 
