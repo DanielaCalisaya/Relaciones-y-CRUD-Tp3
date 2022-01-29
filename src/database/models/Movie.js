@@ -26,7 +26,10 @@ module.exports = (sequelize, dataTypes) => {
             allowNull: false
         },
         length: dataTypes.BIGINT(10),
-        genre_id: dataTypes.BIGINT(10)
+        genre_id: {
+            type: dataTypes.BIGINT(10),
+            allowNull: false
+        }
     };
     let config = {
         timestamps: true,
@@ -38,21 +41,22 @@ module.exports = (sequelize, dataTypes) => {
 
     //Aquí debes realizar lo necesario para crear las relaciones con los otros modelos (Genre - Actor)
 
-     Movie.associate = function(models) {
+    Movie.associate = function(models) {
+
         Movie.belongsTo(models.Genre, {
             as: "genre", /* genre porque le pertenece a un genero */
             foreignKey: "genre_id"
         })
 
-        Movie.belongsToMany(models.Actor, {
+        Movie.belongsToMany(models.Actor, { /* belongsToMany le pertenece a muchos */
             as: "actors",
             through: "actor_movie", /* tabla pivot */
             foreignKey: "movie_id",
-            otherKey: "actor_id",
-            timestamps: false
+            otherKey: "actor_id", /* es la otra llave */
+            timestamps: false /* si queremos que se guarde el timestamps tenemos que configurar el createdAt y el updatedAt */
         })
         
-     }
+    }
 
     return Movie
 };

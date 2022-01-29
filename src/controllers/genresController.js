@@ -4,7 +4,7 @@ const sequelize = db.sequelize;
 
 const genresController = {
     'list': (req, res) => {
-        db.Genre.findAll({
+        db.Genre.findAll({ /* Usamos corchete porque es un objeto, y puedo incluir varias asociaciones */
             include: [{association: "movies"}] /* ahi me mostrará los generos y las peliculas tambien */
         })
             .then(genres => {

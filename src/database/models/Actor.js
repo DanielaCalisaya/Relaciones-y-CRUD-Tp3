@@ -32,15 +32,16 @@ module.exports = (sequelize, dataTypes) => {
 
     //Aquí debes realizar lo necesario para crear las relaciones con el modelo (Movie)
  
-     Actor.associate = function(models) {
-         Actor.belongsToMany(models.Movie, {
+    Actor.associate = function(models) {
+
+        Actor.belongsToMany(models.Movie, {
              as: "movies",
              through: "actor_movie",
              foreignKey: "actor_id",
-             otherKey: "movie_is",
+             otherKey: "movie_id",
              timestamps: false
-         })
-     }
+        })
+    }
 
     return Actor
 };

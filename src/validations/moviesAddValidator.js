@@ -4,21 +4,21 @@ module.exports = [
 
     check('title')
     .notEmpty()
-    .withMesagge('campo requerido'),
+    .withMessage('Campo requerido'),
 
     check('rating')
     .notEmpty()
-    .withMessage('campo requerido'),
+    .withMessage('Campo requerido'),
 
     check('awards')
     .notEmpty()
-    .withMessage('campo requerido'),
+    .withMessage('Campo requerido'),
 
     check('release_date')
     .notEmpty()
-    .withMessage('campo requerido'),
+    .withMessage('Campo requerido'),
 
-    check('genre_id')/* ------?------ */
+    check('genre_id')
     .notEmpty()
-    .withMessage('campo requerido')
+    .withMessage('Campo requerido')
 ]

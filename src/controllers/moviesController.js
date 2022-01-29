@@ -2,9 +2,9 @@ const path = require('path');
 const db = require('../database/models');
 const sequelize = db.sequelize;
 const { Op } = require("sequelize");
-const {validationResult} = require('express-validator');
-const { error } = require('console');
-const res = require('express/lib/response');
+const {validationResult } = require('express-validator');
+/* const { error } = require('console');
+const res = require('express/lib/response'); */
 
 
 //Aqui tienen una forma de llamar a cada uno de los modelos
@@ -62,10 +62,11 @@ const moviesController = {
             })
         })
     },
-    create: function (req,res) {
+    create: function (req, res) {
         const errors = validationResult(req);
 
-        if(errors.isEmpty()){
+        if(errors.isEmpty()) {
+
             const { title, rating, awards, release_date, length, genre_id } = req.body
             
             Movies.create({
@@ -77,25 +78,24 @@ const moviesController = {
                 genre_id 
             })
 
-              .then((movie) => {
-                  res.redirect('/movies')
-                  //res.redirect(`/movies/detail/${movie.id}`);
-
+            .then((movie) => {
+                res.redirect('/movies')
+                  //res.redirect(`/movies/detail/${movie.id}`); otro ejemplo, redirección directamente al detalle de la pelicula
                 })
-              .catch((error) => console.log(error))
+            .catch((error) => console.log(error))
             
         }else{
             db.Genre.findAll()
-        .then((allGenres) => {
-            res.render('moviesAdd', {
-                allGenres,
-                errors: errors.mapped(),
-                old: req.body /* -> te deja guardado lo que escribiste... */
+            .then((allGenres) => {
+                    res.render('moviesAdd', {
+                    allGenres,
+                    errors: errors.mapped(),
+                    old: req.body /* -> te deja guardado lo que escribiste... */
+                })
             })
-        })
         }
     },
-    edit: function(req,res) {
+    edit: function(req, res) {
         const movie = Movies.findByPk(req.params.id);
         const genres = Genres.findAll();
         
@@ -113,16 +113,15 @@ const moviesController = {
         const errors = validationResult(req);
 
         if (errors.isEmpty()) {
-          const { title, rating, awards, release_date, length, genre_id } =
-            req.body;
-          Movies.update({ 
+
+          const { title, rating, awards, release_date, length, genre_id } = req.body;
+            Movies.update({ 
             title, 
             rating, 
             awards, 
             release_date, 
             length, 
-            genre_id 
-          },{
+            genre_id},{
             where: {
               id: req.params.id
             }
@@ -156,8 +155,9 @@ const moviesController = {
                 Movie
             })
         })
+        .catch((error) => console.log(error));
     },
-    destroy: function (req,res) {
+    destroy: function (req, res) {
         Movies.destroy({
             where: {
                 id: req.params.id
@@ -168,6 +168,7 @@ const moviesController = {
                 res.redirect('/movies')
             }
         })
+        .catch((error) => console.log(error));
     }
 }
 
