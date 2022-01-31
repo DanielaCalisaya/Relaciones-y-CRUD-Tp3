@@ -1,5 +1,7 @@
 # Relaciones y CRUD - Tp3
 
+![portada](public/img/cover.png)
+
 ## Objetivo
 Algo muy común en el mundo del desarrollo web es realizar las funcionalidades para dejar
 listo un CRUD completo: creación de recursos, lectura de los mismos, actualización y
@@ -102,6 +104,6 @@ heredados, así como la construcción de las relaciones entre las tablas, hemos 
 operaciones CRUD en la base de datos.
 ¡Hasta la próxima!
 
-## Clase 83
+## Clase 83 y 84
 
 ## Ubicación -> Programación/TRABAJOS PRACTICOS/Relaciones y CRUD-Tp3

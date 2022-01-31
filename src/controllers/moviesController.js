@@ -102,14 +102,14 @@ const moviesController = {
         Promise.all([movie, genres])
         .then(([Movie, allGenres]) => {
           
-          res.render('moviesEdit', {
+            res.render('moviesEdit', {
             Movie, 
             allGenres
-          })
+            })
         })
     
     },
-    update: function (req,res) {
+    update: function (req, res) {
         const errors = validationResult(req);
 
         if (errors.isEmpty()) {
