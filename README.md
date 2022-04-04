@@ -12,6 +12,7 @@ siglas en español: Altas, Bajas y Modificaciones de recursos en una base de dat
 el foco del trabajo, junto a las posibles relaciones que tengan las tablas en la base de datos.
 ¡Buena suerte!😎👍✨
 
+## M6 C33
 
 ## Clase 83 y 84
 
